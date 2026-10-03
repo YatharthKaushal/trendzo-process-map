@@ -21,3 +21,7 @@ Render: New > Static Site (or Blueprint with `render.yaml`), Publish Directory `
 ## Notes
 Built from a read-only review of the closetx repo. Items inferred rather than seen in code are marked **Assumed**.
 Internally the top half uses `section: 'manual'` and the bottom half `section: 'auto'`; labels come from `meta` in `data.js`.
+
+## Document page
+`doc.html` is a read-only rendering of the GST build-vs-buy note (the markdown source is kept outside this repo).
+Rebuild from the project folder with `python trendzo-docs/build_doc_page.py`.

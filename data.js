@@ -8,7 +8,7 @@
  */
 (function () {
   var meta = {
-    brand: 'Trendzo', mark: 'TZ', subtitle: 'Process map', btnTop: 'Built today', btnBottom: 'Proposed',
+    brand: 'Trendzo', mark: 'TZ', docHref: 'doc.html', docLabel: 'GST: build or buy', subtitle: 'Process map', btnTop: 'Built today', btnBottom: 'Proposed',
     topTitle: 'Built today', bottomTitle: 'Proposed: add · automate · modify · remove',
     labels: {
       pains: 'Gaps and risks', automations: 'Improvements that address this', replacedBy: 'Proposed change', replaces: 'Changes',
@@ -54,7 +54,7 @@
     G14: 'AI catalog has no admin review and no regenerate', G15: 'Web push never sent, no app push token, daily digest never emailed', G16: 'Several shopper screens still run on mock data',
     G17: 'No partial-quantity returns or exchanges', G18: 'Commission invoice issuer is the placeholder PLATFORM-GSTIN', G19: 'Commission invoice uses retailer series and wrong place of supply; not reversed on returns',
     G20: 'Month-close button fails (period format); closing does not lock the period', G21: 'GSTR-3B is not built (returns 501)', G22: 'No GSTR-8; TCS file lacks per-supplier split',
-    G23: 'TCS 1% vs statutory 0.5%; invoice and payout use different bases', G24: 'No TDS 194-O ledger, no Form 26Q / 16A', G25: 'No e-invoice (IRN / QR) and no e-way bill',
+    G23: 'TCS 1% vs statutory 0.5%; invoice and payout use different bases', G24: 'No TDS 194-O ledger, no Form 140 / 131', G25: 'No e-invoice (IRN / QR) and no e-way bill',
     G26: 'Composition dealers get a tax invoice online, not a bill of supply', G27: 'Online orders are never B2B (buyer GSTIN null)', G28: 'Shoppers cannot fetch their invoices',
     G29: 'Statement PDF disabled; holds and TCS show 0', G30: 'Retailer downloads invoices one by one; CA files by hand', G31: 'Failed invoice issuing is only logged; nothing retries',
     G32: 'Admin GST-returns screen cannot start a new period', G33: 'Dead code (disputes module, retired CheckoutScreen)', G34: 'Nothing scheduled: cycles, month close and GST files are triggered by humans',
@@ -243,7 +243,7 @@
   T('g_portal', 6, 6, 6, 'external', 'GST portal', 'GSTN', 'Manual filing only.', {});
   T('g_3b', 6, 4, 5, 'gap', 'GSTR-3B is not built', 'Nobody', 'The endpoint returns 501.', { pains: ['G21'], automations: ['I20'], evidence: 'backend modules/admin/invoicing/invoicing.controller.ts:102' });
   T('g_8', 6, 5, 5, 'gap', 'No GSTR-8; TCS file lacks per-supplier totals and tax split', 'Nobody', 'The TCS export is a flat invoice list with no CGST / SGST / IGST split, and credit notes are ignored.', { pains: ['G22'], automations: ['I21'] });
-  T('g_tds', 6, 6, 5, 'gap', 'No TDS 194-O ledger, no Form 26Q / 16A', 'Nobody', 'TDS appears only in the terms text.', { pains: ['G24'], automations: ['I22'] });
+  T('g_tds', 6, 6, 5, 'gap', 'No TDS 194-O ledger, no Form 140 / 131', 'Nobody', 'TDS appears only in the terms text. From 1 Apr 2026 the return is Form 140 and the certificate Form 131 (earlier 26Q and 16A).', { pains: ['G24'], automations: ['I22'] });
   T('g_einv', 6, 7, 5, 'gap', 'No e-invoice (IRN / QR) and no e-way bill', 'Nobody', 'Not built for retailers that need them.', { pains: ['G25'], automations: ['I23'] });
   T('g_close', 6, 3, 3, 'approve', 'Admin clicks "Trigger month close"', 'Admin / ops', 'Writes billing statements and PDFs, the TCS CSV and GST files, for each store.', { touch: tch('trigger', 's_gstc', ['Period']), pains: ['G34'], automations: ['I18', 'I33'], evidence: 'backend shared/settlement/statement.ts' });
   T('g_err', 6, 4, 3, 'gap', 'Month close fails (422); period never locked', 'Nobody', 'The button posts "October 2026" and the API accepts only YYYY-MM. closedAt is always null, GST file status is hard-coded to pending, and closing does not lock the period.', { pains: ['G20'], automations: ['I18'], evidence: 'backend modules/admin/settlement validators:37' });
@@ -353,7 +353,7 @@
   B('b_cons', 6, 7, 0, 'auto', 'Shopper can view and email their invoice', 'Platform + app', 'An invoice screen in the customer app and an email on delivery.', { change: 'add', replaces: ['g_cons'], automations: ['I26'], pains: ['G28'], why: 'Shoppers cannot fetch invoices.' });
   B('b_gstr1', 6, 1, 5, 'auto', 'GSTR-1 per retailer GSTIN, on schedule', 'Platform', 'One file set per retailer GSTIN with correct tax split, instead of a single CSV for every store.', { change: 'add', replaces: ['g_gen', 'g_csv'], automations: ['I19', 'I33'], pains: ['G22', 'G35'], why: 'A single B2C CSV for all stores; credit notes without tax split.' });
   B('b_3b', 6, 2, 5, 'auto', 'GSTR-3B summary per retailer', 'Platform', 'Outward supplies, tax and input tax credit figures ready to file.', { change: 'add', replaces: ['g_3b'], automations: ['I20'], pains: ['G21'], why: 'The endpoint returns 501.' });
-  B('b_tds', 6, 3, 5, 'auto', 'TDS 194-O ledger; Form 26Q / 16A data', 'Platform', 'Per-retailer deductions with certificates.', { change: 'add', replaces: ['g_tds'], automations: ['I22'], pains: ['G24'], why: 'Not built.' });
+  B('b_tds', 6, 3, 5, 'auto', 'TDS 194-O ledger; Form 140 / 131 data', 'Platform', 'Per-retailer deductions with certificates.', { change: 'add', replaces: ['g_tds'], automations: ['I22'], pains: ['G24'], why: 'Not built.' });
   B('b_einv', 6, 4, 5, 'auto', 'E-invoice (IRN / QR) and e-way bill where required', 'Platform', 'For retailers above the threshold or moving goods that need a bill.', { change: 'add', replaces: ['g_einv'], automations: ['I23'], pains: ['G25'], why: 'Not built.' });
   B('b_pack2', 6, 5, 5, 'auto', 'Retailer GST pack and working statements', 'Platform', 'One download per month replaces invoice-by-invoice exports. Holds and TCS show real figures; the statement PDF works.', { change: 'modify', replaces: ['g_dlr', 'g_csv', 'g_stm'], automations: ['I27'], pains: ['G29', 'G30'], why: 'Invoices are downloaded one at a time; statements show 0 and the PDF button is off.' });
   B('b_cal', 6, 6, 5, 'auto', 'Filing calendar and deadline reminders', 'Platform', 'Due dates per return and per retailer, with reminders.', { change: 'add', replaces: [], automations: ['I30'], why: 'No calendar exists.' });
@@ -401,9 +401,15 @@
     ['GSTR-3B', 'Summary GST return with tax payment', 'Monthly summary of sales, input credit and tax payable.'],
     ['GSTR-8', 'Return filed by e-commerce operators', 'Reports the tax collected at source (TCS) on sellers\' sales.'],
     ['TCS', 'Tax Collected at Source', 'Tax a marketplace collects from payouts to sellers and pays to the government.'],
-    ['TDS 194-O', 'Tax Deducted at Source on e-commerce payments', 'A deduction a marketplace makes from seller payouts; needs Form 26Q and certificates.'],
-    ['Form 26Q', 'Quarterly TDS return', 'Filed for non-salary deductions.'],
-    ['Form 16A', 'TDS certificate', 'Given to the person whose tax was deducted.'],
+    ['TDS 194-O', 'Tax Deducted at Source on e-commerce payments', 'A deduction a marketplace makes from seller payouts; needs Form 140 (earlier 26Q) and certificates.'],
+    ['Form 26Q', 'Quarterly TDS return (until 31 Mar 2026)', 'Replaced by Form 140 from 1 Apr 2026.'],
+    ['Form 16A', 'TDS certificate (until 31 Mar 2026)', 'Replaced by Form 131 from 1 Apr 2026.'],
+    ['Form 140', 'Quarterly TDS return under the Income-tax Act 2025', 'Replaces Form 26Q; due 31 Jul, 31 Oct, 31 Jan and 31 May.'],
+    ['Form 131', 'TDS certificate under the Income-tax Act 2025', 'Replaces Form 16A; due 15 days after each Form 140 date.'],
+    ['GSTR-9B', 'Annual statement of e-commerce operators', 'Yearly summary of the tax collected at source; due 31 December.'],
+    ['enrolment ID', 'Number for unregistered sellers on a marketplace', 'Lets a small seller sell only inside its own state without a GSTIN.', true],
+    ['ECO', 'E-commerce Operator', 'A platform that owns or runs a digital marketplace; has TCS and GSTR-8 duties.'],
+    ['GSP', 'GST Suvidha Provider', 'A GSTN-licensed company that connects software to the GST portal through APIs.'],
     ['IRN', 'Invoice Reference Number', 'Unique number the GST portal gives a registered e-invoice.'],
     ['e-invoice', 'Electronic invoice', 'An invoice registered on the GST portal to get an IRN and QR code.', true],
     ['e-way bill', 'Electronic way bill', 'Transport document required for moving goods above a value limit.', true],

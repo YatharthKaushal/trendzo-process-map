@@ -460,6 +460,7 @@
     $('#legend').innerHTML = LEG.map(function (l) { return '<div><i class="' + l[0] + '" style="' + l[1] + '"></i>' + l[2] + '</div>'; }).join('');
     document.title = (M.brand || 'Process map') + ' · ' + (M.subtitle || '');
     var br = document.querySelector('.brand'); if (br) br.innerHTML = '<span class="mark">' + esc(M.mark || 'PM') + '</span><b>' + esc(M.brand || '') + '</b><span class="sep"></span><span class="sub">' + esc(M.subtitle || '') + '</span>';
+    if (M.docHref && !document.querySelector('.doc-btn')) { var g = document.querySelector('[data-act=glossary]'); var l = document.createElement('a'); l.className = 'doc-btn'; l.href = M.docHref; l.textContent = M.docLabel || 'Document'; g.insertAdjacentElement('afterend', l); }
     var bm = document.querySelector('[data-act=manual]'); if (bm) bm.textContent = M.btnTop || 'Built today';
     var ba = document.querySelector('[data-act=auto]'); if (ba) ba.textContent = M.btnBottom || 'Proposed';
   }

@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>GST compliance for retailers: build in-house or buy · Trendzo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235852d8'/%3E%3Ctext x='16' y='21' font-size='13' font-family='sans-serif' font-weight='700' text-anchor='middle' fill='white'%3EOT%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="doc.css">
+</head><body>
+<header><a class="back" href="index.html">← Process map</a><span class="sep"></span><b>Trendzo</b><span class="sub">GST compliance: build or buy</span></header>
+<div class="wrap">
+<nav><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#1-summary-and-recommendation">1. Summary and recommendation</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#2-where-trendzo-sits-as-a-mediator">2. Where Trendzo sits as a mediator</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#3-what-trendzo-already-builds-in-house">3. What Trendzo already builds in-house</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#4-what-a-full-in-house-build-still-needs">4. What a full in-house build still needs</a></div></div><div class="grp"><div class="gh"><button class="tg" aria-label="Expand or collapse" tabindex="-1"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button><a class="l2" href="#5-third-party-options-by-layer">5. Third-party options by layer</a></div><div class="subs"><div><a class="l3" href="#51-gstin-pan-and-bank-verification">5.1 GSTIN, PAN and bank verification</a><a class="l3" href="#52-e-invoice-irn-and-e-way-bill-apis">5.2 E-invoice (IRN) and e-way bill APIs</a><a class="l3" href="#53-gst-suites-and-api-providers-gsps">5.3 GST suites and API providers (GSPs)</a><a class="l3" href="#54-gstr-8-and-tcs-tools">5.4 GSTR-8 and TCS tools</a><a class="l3" href="#55-tds-194-o-returns-and-certificates">5.5 TDS (194-O) returns and certificates</a><a class="l3" href="#56-managed-ca-and-compliance-services">5.6 Managed CA and compliance services</a><a class="l3" href="#57-payout-splitting-and-retailer-side-accounting">5.7 Payout splitting and retailer-side accounting</a></div></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#6-build-or-buy-by-capability">6. Build or buy, by capability</a></div></div><div class="grp"><div class="gh"><button class="tg" aria-label="Expand or collapse" tabindex="-1"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button><a class="l2" href="#7-pricing-comparison">7. Pricing comparison</a></div><div class="subs"><div><a class="l3" href="#71-public-prices-found-2026-10-03">7.1 Public prices found (2026-10-03)</a><a class="l3" href="#72-what-it-costs-at-three-sizes-public-prices-only-assumptions-stated">7.2 What it costs at three sizes (public prices only; assumptions stated)</a><a class="l3" href="#73-your-shortlist-to-be-filled-after-the-first-review">7.3 Your shortlist (to be filled after the first review)</a></div></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#8-risks-and-open-questions-for-a-ca">8. Risks and open questions for a CA</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#9-recommended-path">9. Recommended path</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#10-sources">10. Sources</a></div></div></nav>
+<main>
+<h1>GST compliance for retailers: build in-house or buy</h1>
+
+<p><strong>Date:</strong> 2026-10-03<br />
+<strong>Status:</strong> first draft from desk research, before the team's own shortlist is added<br />
+<strong>Scope:</strong> Trendzo as a software platform that connects retailers and shoppers (retailers are the suppliers; Trendzo is the mediator).<br />
+<strong>Not tax advice.</strong> Legal points come from CBIC-linked and secondary sources (cbic-gst.gov.in and incometaxindia.gov.in could not be read directly). A chartered accountant (CA) should confirm everything in section 8 before decisions are made.</p>
+<hr />
+<h2 id="1-summary-and-recommendation">1. Summary and recommendation</h2>
+<ul>
+<li><strong>Trendzo has obligations of its own, not just the retailers'.</strong> Shoppers pay through Trendzo's checkout (Razorpay), so Trendzo is an e-commerce operator (ECO) that collects the money. That makes it responsible for <strong>TCS at 0.5%</strong> per retailer, a monthly <strong>GSTR-8</strong> return, <strong>TDS at 0.1%</strong> on retailer payouts and its own <strong>commission invoices</strong>. The retailer remains the supplier and owes the tax invoice to the shopper.</li>
+<li><strong>Most of the building blocks already exist in the code</strong>: invoices, gap-free numbering, credit notes, payout maths, month close, a GSTR-1 B2C CSV and a TCS CSV. But several are wrong or unfinished (placeholder issuer GSTIN on commission invoices, GSTR-3B returns an error, no GSTR-8, no TDS data, month close fails from the screen).</li>
+<li><strong>Do not buy a full GST platform yet.</strong> Public pricing for the big suites starts at roughly ₹90,000 a year and runs to ₹3.6-6 lakh a year, and they mainly solve a problem Trendzo does not have yet: retailers above ₹5 crore turnover needing e-invoice and e-way bill for B2B sales.</li>
+<li>
+<p><strong>Recommended path (hybrid):</strong></p>
+<ol>
+<li>Fix and finish the in-house ledger and documents first. It is the data every filing depends on.</li>
+<li>File GSTR-8 with the free government offline utility, or a CA (about ₹2,000-4,000 a month).</li>
+<li>Verify retailer GSTINs with a cheap API (about ₹0.40-0.72 a check).</li>
+<li>Use a filing service or desktop tool for the TDS return (about ₹2,250 a quarter managed).</li>
+<li>Revisit a GST API provider once retailers need e-invoice or e-way bill, or when manual filing becomes the bottleneck.
+- <strong>What changes the answer:</strong> whether retailers or Trendzo collect the shopper's money, how many retailers are above ₹5 crore, and how fast the legal rules keep changing (five changes in about two years, section 4).</li>
+</ol>
+</li>
+</ul>
+<hr />
+<h2 id="2-where-trendzo-sits-as-a-mediator">2. Where Trendzo sits as a mediator</h2>
+<p>Trendzo supplies software and takes a commission. The goods are sold by the retailer. The table shows who owes what, assuming Trendzo's checkout collects the shopper's payment.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Obligation</th>
+<th>Owed by</th>
+<th>Frequency</th>
+<th>Trendzo's role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tax invoice to the shopper (goods)</td>
+<td>Retailer</td>
+<td>Per order</td>
+<td>May generate it <strong>on the retailer's behalf</strong> in the retailer's name and GSTIN, with a written authorisation and a separate numbering series per GSTIN. The retailer stays liable.</td>
+</tr>
+<tr>
+<td>Bill of supply (composition dealers, exempt goods)</td>
+<td>Retailer</td>
+<td>Per order</td>
+<td>Same: generate on behalf, using the right document type per retailer.</td>
+</tr>
+<tr>
+<td>Credit note on a return</td>
+<td>Retailer</td>
+<td>Per return</td>
+<td>Generate on behalf; also net returns in GSTR-8.</td>
+</tr>
+<tr>
+<td>Commission, platform fee, delivery fee invoice</td>
+<td><strong>Trendzo</strong></td>
+<td>Per order or per month (within 30 days)</td>
+<td>Issue under Trendzo's own GSTIN, 18% GST. The place of supply for a registered retailer is the retailer's location.</td>
+</tr>
+<tr>
+<td>TCS under GST s.52 at <strong>0.5%</strong> of each retailer's <strong>net</strong> taxable supplies (returns netted)</td>
+<td><strong>Trendzo</strong></td>
+<td>Monthly</td>
+<td>Collect from the retailer payout; track per retailer GSTIN.</td>
+</tr>
+<tr>
+<td><strong>GSTR-8</strong> return</td>
+<td><strong>Trendzo</strong></td>
+<td>By the 10th of the next month</td>
+<td>Prepare and file; also the annual statement (GSTR-9B). Retailers then accept the TCS credit.</td>
+</tr>
+<tr>
+<td>TDS under income tax, old s.194-O (now <strong>s.393(1)</strong> of the Income-tax Act 2025) at <strong>0.1%</strong></td>
+<td><strong>Trendzo</strong></td>
+<td>Deduct at credit or payment; quarterly return</td>
+<td>Deduct from payouts; file <strong>Form 140</strong> (earlier 26Q); issue <strong>Form 131</strong> (earlier 16A). Resident individuals or HUFs up to ₹5 lakh a year who give PAN or Aadhaar are exempt.</td>
+</tr>
+<tr>
+<td>E-invoice (IRN)</td>
+<td>Retailer, only if its annual turnover is above ₹5 crore</td>
+<td>Per B2B invoice</td>
+<td>May generate on the retailer's behalf. B2C invoices are out of scope, so most retailers need none.</td>
+</tr>
+<tr>
+<td>E-way bill</td>
+<td>Consignor (retailer)</td>
+<td>Per consignment above ₹50,000</td>
+<td>May fill Part A with authorisation.</td>
+</tr>
+<tr>
+<td>Registration of sellers</td>
+<td>Retailer</td>
+<td>Once</td>
+<td>Enforce: compulsory when the ECO collects TCS, except small intra-state sellers with an enrolment ID.</td>
+</tr>
+<tr>
+<td>Records for 72 months, edit log</td>
+<td>All parties</td>
+<td>Continuous</td>
+<td>Keep records; answer officer requests within 15 working days.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Points that matter for design:</p>
+<ul>
+<li><strong>Section 9(5), where the platform pays the GST itself, does not cover goods or fashion.</strong> It applies to services such as restaurants and, since 22 Sep 2025, local delivery by unregistered riders at 18%. If Trendzo's riders are unregistered, the delivery fee needs a CA's view.</li>
+<li><strong>Composition dealers may sell goods through an ECO</strong> (since 1 Oct 2023), but Trendzo must block their inter-state orders, collect TCS and report them in GSTR-8.</li>
+<li><strong>Small unregistered sellers can sell only inside their own state</strong>, using an enrolment ID. No TCS on them, but they appear in GSTR-8 Table 3.1. They cannot charge GST. There is no exemption for small inter-state sellers of goods. A single-state registration scheme is on the GST Council agenda for 7 Oct 2026.</li>
+<li><strong>If retailers collected the shoppers' money directly</strong>, there would be no TCS and no GSTR-8, but TDS would still apply. That is a design choice with large consequences, so it needs a CA's confirmation.</li>
+</ul>
+<hr />
+<h2 id="3-what-trendzo-already-builds-in-house">3. What Trendzo already builds in-house</h2>
+<p>From a read-only review of the backend and web portal:</p>
+<p><strong>Exists and works</strong></p>
+<ul>
+<li>Tax invoices to shoppers on delivery, supplementary invoices when a held item is kept, credit notes on successful refunds, and counter-sale invoices or bills of supply in POS.</li>
+<li>Per-order commission invoices (SAC 9985 at 18%) issued on delivery.</li>
+<li>Gap-free numbering per legal entity, financial year and series, with PDFs stored.</li>
+<li>Payout maths: commission, 18% GST on commission, TCS, refunds, holds and adjustments.</li>
+<li>Month close that writes statements, a GSTR-1 B2C CSV and a TCS CSV; a retailer GST summary and HSN summary with CSV export.</li>
+</ul>
+<p><strong>Known defects and gaps</strong></p>
+<ul>
+<li>GSTR-3B is not built (the endpoint returns an error); there is no GSTR-8; there is no TDS ledger and no Form 140 or 131 data.</li>
+<li>The commission invoice issuer is the placeholder <code>PLATFORM-GSTIN</code>; it uses the retailer's numbering series; the CGST/SGST versus IGST choice uses the shopper's state; commission is not reversed on returns.</li>
+<li>The month-close button sends a period format the API rejects, so it fails from the screen; closing does not lock the period.</li>
+<li>TCS defaults to 1% where the law says 0.5%, is added to the shopper's invoice total although checkout does not charge it, and is calculated on different bases in the invoice and the payout.</li>
+<li>Composition dealers get a tax invoice online; buyer GSTIN is never captured, so no B2B; shoppers cannot fetch their invoices.</li>
+<li>GSTIN is checked for length only. No e-invoice and no e-way bill.</li>
+<li>A failed invoice is only logged; nothing retries. The retailer statement PDF button is disabled and its holds and TCS figures show zero.</li>
+</ul>
+<hr />
+<h2 id="4-what-a-full-in-house-build-still-needs">4. What a full in-house build still needs</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Gap to close</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Seller-wise TCS ledger</td>
+<td>Net taxable value per retailer GSTIN per month, returns netted, CGST/SGST/IGST split, one rate and one base</td>
+<td>M</td>
+</tr>
+<tr>
+<td>GSTR-8 file</td>
+<td>Table 3 and 3.1 data in the portal's upload format, plus amendments</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TDS ledger and Form 140 / 131 data</td>
+<td>Per PAN, ₹5 lakh check, quarterly return file, certificate data</td>
+<td>M</td>
+</tr>
+<tr>
+<td>Per-retailer GSTR-1 and GSTR-3B data</td>
+<td>Per GSTIN, B2B and B2C, credit notes with tax split</td>
+<td>M-L</td>
+</tr>
+<tr>
+<td>Commission invoice fixes</td>
+<td>Real platform GSTIN, platform series, correct place of supply, reversal on return</td>
+<td>S-M</td>
+</tr>
+<tr>
+<td>Document type per retailer</td>
+<td>Bill of supply for composition dealers; buyer GSTIN for B2B</td>
+<td>S-M</td>
+</tr>
+<tr>
+<td>Month close and scheduling</td>
+<td>Fix the period format, lock periods, run on a schedule</td>
+<td>S</td>
+</tr>
+<tr>
+<td>GSTIN verification</td>
+<td>Checksum plus live lookup (almost always bought as an API)</td>
+<td>S</td>
+</tr>
+<tr>
+<td>E-invoice and e-way bill</td>
+<td>Only for retailers above ₹5 crore or large consignments; almost always bought through a GST API provider</td>
+<td>L if built</td>
+</tr>
+<tr>
+<td>Filing calendar, health dashboard, CA access</td>
+<td>Reminders, missing HSN or bad GSTIN alerts, read-only CA role</td>
+<td>S-M</td>
+</tr>
+</tbody>
+</table></div>
+<p>Sizes are relative effort (S under a week, M 1-3 weeks, L over 3 weeks, for one developer who knows the code), not estimates.</p>
+<p><strong>Rules keep changing, and each change is engineering and CA time:</strong></p>
+<ul>
+<li>TCS rate cut from 1% to 0.5% (10 Jul 2024).</li>
+<li>TDS rate cut from 1% to 0.1% (1 Oct 2024).</li>
+<li>Local delivery by unregistered riders brought under s.9(5) at 18% (22 Sep 2025).</li>
+<li>Credit notes tied to the buyer's input credit reversal through the Invoice Management System (1 Oct 2025).</li>
+<li>Income-tax Act 2025 (1 Apr 2026): old section 194-O became s.393(1); Form 26Q became Form 140 and Form 16A became Form 131.</li>
+<li>Pending: a single-state registration scheme for small ECO sellers (Council meeting 7 Oct 2026).</li>
+</ul>
+<hr />
+<h2 id="5-third-party-options-by-layer">5. Third-party options by layer</h2>
+<p>All prices were read on public pages on 2026-10-03 and are in rupees. "Quote on request" means no public price. Whether prices include GST was often not stated.</p>
+<h3 id="51-gstin-pan-and-bank-verification">5.1 GSTIN, PAN and bank verification</h3>
+<ul>
+<li><strong>Appyflow</strong>: GSTIN lookup, ₹0.50 a request (₹0.40 if a recharge is above ₹1,000), credits never expire, 50 free requests. https://appyflow.in/verify-gst/</li>
+<li><strong>gstinapi.com / gstinapi.in</strong>: ₹0.50 a check, ₹0.40 at 2,500+ credits; the second site quotes ₹0.40-0.80 and 100 free lookups (its comparison page is self-promotional). https://gstinapi.com/pricing</li>
+<li><strong>GSTZen GST Validator</strong>: ₹3,500 a year for 5,000 calls, ₹5,000 for 10,000, ₹8,250 for 25,000. https://gstzen.in/gst-validator-api-pricing-details</li>
+<li><strong>Eko EPS</strong>: GSTIN from ₹0.72 a verification; PAN and bank too. https://eps.eko.in/products/gst-verification-api</li>
+<li><strong>Quote on request:</strong> Cashfree Secure ID (GSTIN, PAN, bank penny-drop; ₹100 trial credits), Signzy (₹5,000 sandbox credits), Surepass, Karza (Perfios), IDfy, Attestr. Setu offers bank verification; a "₹3 per verification" figure appeared only in search snippets, so it is <strong>not verified</strong>.</li>
+<li><strong>GSTN enrolment-ID checks</strong> for unregistered sellers are available only through a GSP.</li>
+<li><strong>Verdict:</strong> buy. At a few hundred retailers the cost is under ₹1,000 a year.</li>
+</ul>
+<h3 id="52-e-invoice-irn-and-e-way-bill-apis">5.2 E-invoice (IRN) and e-way bill APIs</h3>
+<ul>
+<li><strong>NIC portals</strong>: free, but a direct API is for very large taxpayers only (the threshold is stated as ₹100 crore on one NIC page and ₹500 crore elsewhere). Everyone else goes through a GSP. https://einv-apisandbox.nic.in/onboarding.html</li>
+<li><strong>IRIS IRP-6</strong> and <strong>Cygnet IRP-3</strong>: government-authorised e-invoice portals; basic generation free (IRIS premium services "to be announced"). https://einvoice6.gst.gov.in/content/pricing-plan/</li>
+<li><strong>GSTZen</strong>: e-invoice 18 paise an invoice with a ₹50,000 a year minimum (invoices kept 10 days), or 50 paise with a ₹25,000 minimum (kept 7 years); signing certificate ₹15,000 a year. E-way bill 18 paise with a ₹50,000 minimum <strong>per GSTIN</strong>, or 35 paise with ₹25,000 <strong>per GSTIN</strong>. https://gstzen.in/e-invoicing-api-integration-pricing</li>
+<li><strong>Adaequare</strong>: IRN 0.25 a transaction, IRN with e-way bill 0.40, custom payloads 0.80, plus GSTR-1 transfer 1.50. Its page had an expired certificate when read, and the currency symbol did not display, so INR is assumed. https://ugsp.adaequare.com/e-invoice-api</li>
+<li><strong>Verdict:</strong> buy, only when retailers above ₹5 crore sell to businesses or ship large consignments. Prefer per-transaction pricing; avoid per-GSTIN minimums with many small retailers.</li>
+</ul>
+<h3 id="53-gst-suites-and-api-providers-gsps">5.3 GST suites and API providers (GSPs)</h3>
+<ul>
+<li><strong>ClearTax (Clear)</strong>: suite "starting at ₹7,777 a month"; API per-call price on request. Says it is a GSP/ASP. Each GSTIN needs its own NIC API credentials. https://cleartax.in/s/e-invoicing-gst-compliance-solution/</li>
+<li><strong>Adaequare</strong>: GST API plans ₹50,000 a month including 2,00,000 calls, or ₹30,000 a month including 1,00,000 calls; "Enriched" plan ₹50,000 a month including 500 GSTINs. https://ugsp.adaequare.com/gst-apis</li>
+<li><strong>WhiteBooks</strong>: <strong>two pages conflict</strong>: "₹5,999 to ₹24,999" and "startup tier from ₹14,999 a month". Explicit multi-GSTIN support with delegated consent. https://whitebooks.in/about/pricing/</li>
+<li><strong>Quote on request:</strong> Masters India (also a GSP), MasterGST (Tera Software), IRIS GSP, WeP, TaxPro GSP, Cygnet GSP.</li>
+<li><strong>Vayana</strong>: not verified; a reseller lists ₹40,000-75,000 a year plus integration fees.</li>
+<li><strong>Sandbox.co.in (Quicko)</strong>: 200+ APIs including GSTIN, returns, e-invoice, PAN and bank; a <strong>technology provider, not a GSP</strong>; 14-day trial; plan prices are a dynamic calculator and were not readable. https://sandbox.co.in/pricing</li>
+<li><strong>India Compliance (ERPNext)</strong>: open-source GST app, free on Frappe Cloud; credit price not verified. https://indiacompliance.app/</li>
+<li><strong>Verdict:</strong> defer. These matter when many retailers need returns, e-invoice and e-way bill through your platform. Ask any shortlisted provider whether it stores each retailer's credentials with consent and whether pricing is per call or per GSTIN.</li>
+</ul>
+<h3 id="54-gstr-8-and-tcs-tools">5.4 GSTR-8 and TCS tools</h3>
+<ul>
+<li><strong>GSTN GSTR-8 Offline Utility</strong>: free government download; you fill a CSV or Excel and upload it. Good if Trendzo exports a retailer-wise CSV each month. </li>
+<li><strong>Clear GST (ClearTax)</strong>: GSTR-8 preparation, many GSTINs, template import, TCS challans; quote on request.</li>
+<li><strong>Taxilla</strong>: matches TCS to order and settlement data, seller GSTIN checks, approvals, audit logs; enterprise, quote on request. https://www.taxilla.com/blog/gstr-8-filing</li>
+<li><strong>IRIS Sapphire</strong>, <strong>Cygnet Tax</strong>: report GSTR-8; quote on request (Cygnet not verified, its site did not load).</li>
+<li><strong>Gen GST (SAG Infotech)</strong>: desktop ₹5,000 install and ₹2,000 a year; online e-filing ₹25,000 and ₹10,000; all-in-one online ₹10,000 and ₹7,000, plus 18% GST. GSTR-8 appears only in a third-party listing. https://saginfotech.com/PriceCalculator.aspx</li>
+<li><strong>Not confirmed to support GSTR-8 for operators:</strong> Zoho Books, TallyPrime, Avalara India, Masters India (no product page), Vayana (no public endpoint).</li>
+<li><strong>Verdict:</strong> use the free utility or a CA now; look at Clear or Taxilla only at thousands of sellers or for API filing.</li>
+</ul>
+<h3 id="55-tds-194-o-returns-and-certificates">5.5 TDS (194-O) returns and certificates</h3>
+<ul>
+<li><strong>Sandbox (Quicko)</strong>: TDS calculation, PAN and TAN checks, Form 16A and 26Q APIs; plan price not readable. https://sandbox.co.in/tds</li>
+<li><strong>Gen e-TDS</strong>: ₹3,500 install and ₹1,500 a year, plus GST. https://saginfotech.com/PriceCalculator.aspx</li>
+<li><strong>Winman TDS</strong>: list ₹13,300; ₹7,490 only for existing Winman licence holders; the price list is undated. https://www.winmansoftware.com/files/Software_pricelist_winman.pdf</li>
+<li><strong>KDK Spectrum Cloud TDS</strong>: bulk Form 16/16A, TRACES fetch, Form 26Q/140; price not on the vendor page (a third party says ₹6,300 a year, not verified). https://www.kdksoftware.com/spectrum-cloud/tds/</li>
+<li><strong>TDSMAN</strong>: desktop and cloud editions; rupee amounts not readable. https://www.tdsman.com/pricing.asp</li>
+<li><strong>Managed filing:</strong> EZTax Form 140 / 26Q ₹2,249 plus GST a quarter, including Form 131 certificates (https://eztax.in/form26q-tds-return); ClearTax expert TDS from ₹2,500 for 24Q and 26Q (https://cleartax.in/tds).</li>
+<li><strong>Check before buying:</strong> only KDK and EZTax mention the renamed Forms 140 and 131.</li>
+</ul>
+<h3 id="56-managed-ca-and-compliance-services">5.6 Managed CA and compliance services</h3>
+<ul>
+<li><strong>Patron Accounting</strong> (indicative, per its page): GSTR-8 only ₹1,999 a month per GSTIN; GSTR-8 + GSTR-1 + GSTR-3B ₹3,999 a month; reconciliation ₹2,999 a month; section 9(5) add-on ₹1,999 a month; annual return ₹4,999; annual package ₹39,999; 20% off for 5+ GSTINs. TDS 194-O is not mentioned. https://www.patronaccounting.com/gst-returns-for-e-commerce-operator</li>
+<li><strong>IndiaFilings, TaxBuddy:</strong> no prices shown.</li>
+<li><strong>Note:</strong> GSTR-8 is filed under <strong>Trendzo's own GSTIN</strong>, so "per GSTIN" here means one or two GSTINs, not one per retailer.</li>
+</ul>
+<h3 id="57-payout-splitting-and-retailer-side-accounting">5.7 Payout splitting and retailer-side accounting</h3>
+<ul>
+<li><strong>Cashfree Easy Split</strong> and <strong>Razorpay Route</strong>: split payments and pay vendors; reconciliation reports. Neither page says it computes TCS or TDS natively. Prices not checked. https://www.cashfree.com/docs/payments/split/billing/configuration, https://razorpay.com/route/</li>
+<li><strong>Zoho Books</strong> (per organisation a month, billed annually): Free; Standard ₹749; Professional ₹1,499; Premium ₹2,999; Elite ₹4,999; Ultimate ₹7,999. E-invoice and e-way bill from Standard up. API 1,000-10,000 calls a day by plan. https://www.zoho.com/in/books/pricing/</li>
+<li><strong>TallyPrime</strong>: Silver ₹22,500 lifetime or ₹750 a month; Gold ₹67,500 or ₹2,250 a month. Integration is XML against a running Tally install, not cloud REST (third-party source). https://tallysolutions.com/buy-tally/</li>
+<li><strong>Cygnet Invoicing Tool</strong>: free plan; Standard ₹9,999 a year (3,000 invoices, up to 10 GSTINs); Premium ₹14,999 (10,000 invoices, up to 20 GSTINs). https://invoicingtool.cygnettaxtech.com/pricing/</li>
+<li><strong>Swipe:</strong> list prices not verified. <strong>Razorpay Invoices:</strong> the API can create only <strong>non-GST</strong> invoices, so it cannot make GST invoices.</li>
+<li><strong>Verdict:</strong> these are for retailers to run their own books. Paying for them per retailer does not scale (see the scenario table).</li>
+</ul>
+<p><strong>What the research did not find:</strong> a public vendor case study of a marketplace; how Amazon, Flipkart, Meesho or Myntra run TCS and TDS internally (only Amazon's blog says Amazon files GSTR-8).</p>
+<hr />
+<h2 id="6-build-or-buy-by-capability">6. Build or buy, by capability</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Recommendation</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Seller-wise TCS and TDS ledger</td>
+<td><strong>Build</strong></td>
+<td>It is your own data (orders, returns, payouts). No vendor can compute it without it.</td>
+</tr>
+<tr>
+<td>Retailer tax invoice, bill of supply, credit note</td>
+<td><strong>Build</strong></td>
+<td>Already exists; fix defects. Per-order volume and generation on the retailer's behalf are cheaper in-house.</td>
+</tr>
+<tr>
+<td>Commission, platform and delivery fee invoices</td>
+<td><strong>Build</strong></td>
+<td>Trendzo's own documents; fix issuer, series and place of supply.</td>
+</tr>
+<tr>
+<td>GSTR-8 file</td>
+<td><strong>Build the file, file via utility or CA</strong></td>
+<td>A CSV export is small; the free utility accepts it; a CA costs about ₹2,000-4,000 a month.</td>
+</tr>
+<tr>
+<td>Form 140 / 131</td>
+<td><strong>Build the data, buy the filing</strong></td>
+<td>Return utilities are cheap or managed filing is about ₹2,250 a quarter.</td>
+</tr>
+<tr>
+<td>GSTIN, PAN, bank verification</td>
+<td><strong>Buy</strong></td>
+<td>₹0.40-0.72 a check; building lookups is not worth it.</td>
+</tr>
+<tr>
+<td>E-invoice and e-way bill</td>
+<td><strong>Buy, when needed</strong></td>
+<td>Only for retailers above ₹5 crore or consignments above ₹50,000; per-transaction API pricing.</td>
+</tr>
+<tr>
+<td>Per-retailer GSTR-1 / GSTR-3B data</td>
+<td><strong>Build data, retailers or their CA file</strong></td>
+<td>Data export is cheap; a GSP is only needed to file through your platform.</td>
+</tr>
+<tr>
+<td>Filing through your platform on behalf of retailers</td>
+<td><strong>Buy (GSP) later</strong></td>
+<td>Large fixed cost and credential handling; not needed to start.</td>
+</tr>
+<tr>
+<td>Retailer bookkeeping</td>
+<td><strong>Retailers' choice</strong></td>
+<td>Do not pay per retailer.</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="7-pricing-comparison">7. Pricing comparison</h2>
+<h3 id="71-public-prices-found-2026-10-03">7.1 Public prices found (2026-10-03)</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Provider</th>
+<th>Price as published</th>
+<th>Unit</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GSTIN check</td>
+<td>Appyflow</td>
+<td>₹0.50 (₹0.40 over ₹1,000 recharge)</td>
+<td>per check</td>
+<td>50 free</td>
+</tr>
+<tr>
+<td>GSTIN check</td>
+<td>gstinapi.com</td>
+<td>₹0.50 (₹0.40 at 2,500+)</td>
+<td>per check</td>
+<td>20 free</td>
+</tr>
+<tr>
+<td>GSTIN check</td>
+<td>GSTZen</td>
+<td>₹3,500 / ₹5,000 / ₹8,250</td>
+<td>per year for 5,000 / 10,000 / 25,000 calls</td>
+<td></td>
+</tr>
+<tr>
+<td>GSTIN check</td>
+<td>Eko</td>
+<td>from ₹0.72</td>
+<td>per check</td>
+<td>volume tiers by quote</td>
+</tr>
+<tr>
+<td>E-invoice</td>
+<td>Adaequare</td>
+<td>0.25 (IRN), 0.40 (IRN + e-way bill)</td>
+<td>per transaction</td>
+<td>currency assumed INR</td>
+</tr>
+<tr>
+<td>E-invoice</td>
+<td>GSTZen</td>
+<td>0.18 with ₹50,000 minimum, or 0.50 with ₹25,000 minimum</td>
+<td>per invoice, per year</td>
+<td>cert ₹15,000 a year</td>
+</tr>
+<tr>
+<td>E-way bill</td>
+<td>GSTZen</td>
+<td>0.18 with ₹50,000, or 0.35 with ₹25,000</td>
+<td>per bill, per GSTIN a year</td>
+<td>per-GSTIN minimum</td>
+</tr>
+<tr>
+<td>GST API</td>
+<td>Adaequare</td>
+<td>₹50,000 or ₹30,000</td>
+<td>per month (2,00,000 or 1,00,000 calls)</td>
+<td>currency assumed INR</td>
+</tr>
+<tr>
+<td>GST suite</td>
+<td>ClearTax</td>
+<td>from ₹7,777</td>
+<td>per month</td>
+<td>API price on request</td>
+</tr>
+<tr>
+<td>GST API</td>
+<td>WhiteBooks</td>
+<td>₹5,999-24,999 or from ₹14,999</td>
+<td>per month</td>
+<td>two pages conflict</td>
+</tr>
+<tr>
+<td>GSTR-8</td>
+<td>GSTN offline utility</td>
+<td>free</td>
+<td>n/a</td>
+<td>needs your own CSV</td>
+</tr>
+<tr>
+<td>GSTR-8</td>
+<td>Patron Accounting</td>
+<td>₹1,999</td>
+<td>per month per GSTIN</td>
+<td>indicative</td>
+</tr>
+<tr>
+<td>GSTR-8 + 1 + 3B</td>
+<td>Patron Accounting</td>
+<td>₹3,999</td>
+<td>per month</td>
+<td>indicative</td>
+</tr>
+<tr>
+<td>TDS return</td>
+<td>EZTax</td>
+<td>₹2,249 + GST</td>
+<td>per quarter</td>
+<td>includes Form 131</td>
+</tr>
+<tr>
+<td>TDS return</td>
+<td>ClearTax expert</td>
+<td>from ₹2,500</td>
+<td>per filing (24Q + 26Q)</td>
+<td>period not stated</td>
+</tr>
+<tr>
+<td>TDS software</td>
+<td>Gen e-TDS</td>
+<td>₹3,500 + ₹1,500 a year + GST</td>
+<td>install, renewal</td>
+<td>check Form 140 support</td>
+</tr>
+<tr>
+<td>Retailer books</td>
+<td>Zoho Books Standard</td>
+<td>₹749</td>
+<td>per org per month (annual billing)</td>
+<td></td>
+</tr>
+<tr>
+<td>Retailer books</td>
+<td>Cygnet Invoicing Tool</td>
+<td>₹9,999 / ₹14,999</td>
+<td>per year for 10 / 20 GSTINs</td>
+<td>3,000 / 10,000 invoice caps</td>
+</tr>
+</tbody>
+</table></div>
+<p>Quote-only: Masters India, MasterGST, IRIS, WeP, TaxPro, Cygnet GSP, Taxilla, Clear GST API, Surepass, Signzy, Karza, IDfy, Setu, Cashfree, Attestr, Sandbox plans.</p>
+<h3 id="72-what-it-costs-at-three-sizes-public-prices-only-assumptions-stated">7.2 What it costs at three sizes (public prices only; assumptions stated)</h3>
+<p>Assumptions: two GSTIN checks per retailer a year (at signup and a yearly re-check); GSTR-8 and TDS are filed once for Trendzo's own GSTIN, so retailer count does not change them; e-invoice and e-way bill are needed by few retailers.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Cost line</th>
+<th>100 retailers</th>
+<th>500 retailers</th>
+<th>2,000 retailers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GSTIN checks, Appyflow at ₹0.50</td>
+<td>₹100 a year</td>
+<td>₹500 a year</td>
+<td>₹2,000 a year</td>
+</tr>
+<tr>
+<td>GSTIN checks, GSTZen 5,000-call pack</td>
+<td>₹3,500 a year</td>
+<td>₹3,500 a year</td>
+<td>₹3,500 a year</td>
+</tr>
+<tr>
+<td>GSTR-8 by free offline utility</td>
+<td>₹0 plus staff time</td>
+<td>₹0 plus staff time</td>
+<td>₹0 plus staff time</td>
+</tr>
+<tr>
+<td>GSTR-8 only by CA (₹1,999 a month)</td>
+<td>₹23,988 a year</td>
+<td>₹23,988 a year</td>
+<td>₹23,988 a year</td>
+</tr>
+<tr>
+<td>GSTR-8 + own GSTR-1 + 3B by CA (₹3,999 a month)</td>
+<td>₹47,988 a year</td>
+<td>₹47,988 a year</td>
+<td>₹47,988 a year</td>
+</tr>
+<tr>
+<td>TDS return, EZTax (₹2,249 a quarter, plus GST)</td>
+<td>₹8,996 a year</td>
+<td>₹8,996 a year</td>
+<td>₹8,996 a year</td>
+</tr>
+<tr>
+<td>GST API, Adaequare 100k-call plan</td>
+<td>₹3,60,000 a year</td>
+<td>₹3,60,000 a year</td>
+<td>₹3,60,000 a year</td>
+</tr>
+<tr>
+<td>GST suite, ClearTax from ₹7,777 a month</td>
+<td>₹93,324 a year</td>
+<td>₹93,324 a year</td>
+<td>₹93,324 a year</td>
+</tr>
+<tr>
+<td><strong>If Trendzo paid retailers' books</strong>, Zoho Standard</td>
+<td>₹8,98,800 a year</td>
+<td>₹44,94,000 a year</td>
+<td>₹1,79,76,000 a year</td>
+</tr>
+</tbody>
+</table></div>
+<p>Reading the table:</p>
+<ul>
+<li>Verification, GSTR-8 and TDS cost the same whether Trendzo has 100 or 2,000 retailers. A realistic <strong>platform-side compliance bill is roughly ₹36,000-61,000 a year before GST</strong> (GSTIN checks, a CA for GSTR-8 and the TDS return), and lower if the free GSTR-8 utility is used.</li>
+<li><strong>E-invoice minimums:</strong> on GSTZen's 18-paise plan you pay the ₹50,000 minimum until volume passes about <strong>2.8 lakh invoices a year</strong> (50,000 ÷ 0.18); on the 50-paise plan the ₹25,000 minimum applies until <strong>50,000 invoices a year</strong> (25,000 ÷ 0.50). Below those volumes the minimum, not the per-invoice rate, is the cost. Adaequare at 0.25 per IRN is ₹250 per 1,000 invoices, with no minimum shown.</li>
+<li>E-way bill minimums apply <strong>per GSTIN</strong>, so 20 retailers on the 18-paise plan would cost ₹10,00,000 a year in minimums alone.</li>
+<li>Paying for retailers' bookkeeping per retailer is the only line that scales linearly and gets very expensive. Do not offer it as a free feature.</li>
+</ul>
+<p>In-house engineering and CA review time are <strong>not</strong> priced here because no public number exists. Add them from the team's own cost per developer-week in the next table.</p>
+<h3 id="73-your-shortlist-to-be-filled-after-the-first-review">7.3 Your shortlist (to be filled after the first review)</h3>
+<blockquote>
+<p>Placeholder. Add each shortlisted service and its quote below, and the comparison above will be extended to include them.</p>
+</blockquote>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Layer (verify, e-invoice, GSP, GSTR-8, TDS, CA)</th>
+<th>Quoted price</th>
+<th>Unit</th>
+<th>Contract terms</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(to add)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>(to add)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>(to add)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>In-house cost inputs (to add): developer-week cost, estimated weeks per capability from section 4, ongoing maintenance weeks per year for rule changes, CA review fee.</p>
+<hr />
+<h2 id="8-risks-and-open-questions-for-a-ca">8. Risks and open questions for a CA</h2>
+<ol>
+<li><strong>Does Trendzo collect the shopper's money?</strong> The code says yes (Razorpay checkout). If yes, TCS, GSTR-8 and compulsory seller registration follow. If retailers collected directly, GST TCS would fall away but TDS would not.</li>
+<li><strong>SAC code for the commission.</strong> No official mapping exists; 998599 / 9985 is common practice, 9962 (retail on a fee basis) is arguable, software subscriptions may fall under 9973 or 9983.</li>
+<li><strong>Income-tax Act 2025 details.</strong> Payment code (secondary sources disagree between 1035 and 1037) and whether circulars issued under the 1961 Act carry over.</li>
+<li><strong>GST Council meeting on 7 Oct 2026.</strong> A single-state registration scheme for small sellers may change onboarding rules.</li>
+<li><strong>Unregistered enrolled sellers.</strong> What document they should issue, since they cannot charge GST.</li>
+<li><strong>Delivery fee and unregistered riders.</strong> Since 22 Sep 2025, local delivery by unregistered riders through an ECO is taxed under s.9(5) at 18%; check whether this affects Trendzo's riders.</li>
+<li><strong>Data protection.</strong> The DPDP Rules apply mostly from 13 May 2027 (a proposal to shorten the timeline is unconfirmed). Sole-proprietor GSTINs embed PAN and invoices carry shoppers' names, so they are personal data; GST and income-tax retention duties override erasure. Whether Trendzo is a data fiduciary or processor for retailers' invoice data is unclear.</li>
+<li><strong>Penalties.</strong> Failing to collect or deposit TCS, or letting an ineligible seller sell, can cost ₹10,000 or the tax involved, whichever is higher.</li>
+<li><strong>Prices not verified:</strong> Vayana, Swipe, Setu, Sandbox plans, India Compliance credits, TDSMAN, KDK, IndiaFilings, TaxBuddy, Razorpay Route, Cashfree Easy Split; the conflict between two WhiteBooks pages; Adaequare's currency symbol; GSTZen's GSP status; whether each GSTR-8 and TDS product has been updated for the new Forms 140 and 131.</li>
+</ol>
+<hr />
+<h2 id="9-recommended-path">9. Recommended path</h2>
+<p><strong>Phase 0: fix what exists (in-house)</strong></p>
+<ul>
+<li>Real platform GSTIN, series and place of supply on commission invoices; reverse commission on returns.</li>
+<li>One TCS rate (0.5%) and one base, charged to retailers' payouts, not to shoppers.</li>
+<li>Fix the month-close period format, lock closed periods, add retries for failed invoices.</li>
+<li>Bill of supply for composition dealers online; capture buyer GSTIN for B2B.</li>
+</ul>
+<p><strong>Phase 1: close the platform's own filings</strong></p>
+<ul>
+<li>Seller-wise TCS and TDS ledgers; export a GSTR-8 CSV; file with the free offline utility or a CA.</li>
+<li>TDS: produce Form 140 / 131 data; file with a managed service or a desktop tool.</li>
+<li>Buy GSTIN verification (cheap API) at onboarding and on change requests.</li>
+</ul>
+<p><strong>Phase 2: help retailers file</strong></p>
+<ul>
+<li>Retailer GST pack (invoices, GSTR-1 and HSN data, TCS and TDS certificates) and a read-only CA role.</li>
+</ul>
+<p><strong>Phase 3: buy where it hurts</strong></p>
+<ul>
+<li>Only if retailers above ₹5 crore or large consignments appear: an e-invoice and e-way bill API on per-transaction pricing.</li>
+<li>Only if filing on behalf of retailers becomes a product: a GSP with delegated credentials.</li>
+</ul>
+<p><strong>Decision gates:</strong> CA confirmation of section 8 items; number of retailers above ₹5 crore turnover; whether manual GSTR-8 and TDS filing takes more staff time than a managed service costs.</p>
+<hr />
+<h2 id="10-sources">10. Sources</h2>
+<p>All read on 2026-10-03 unless stated.</p>
+<p><strong>Law and procedure</strong></p>
+<ul>
+<li>NACIN e-book on e-commerce operators and GST (Sept 2024): https://www.nacin.gov.in/ZCVisakhapatnam/Images/Documents/EBooks/e-Book%20on%20e-Commerce%20Operators%20and%20GST%20-%20NACIN%20Vizag%20(September,%202024).pdf</li>
+<li>GSTR-8 FAQs, GST portal: https://tutorial.gst.gov.in/userguide/returns/FAQs_GSTR-8.htm</li>
+<li>TCS rate cut to 0.5%: https://taxguru.in/goods-and-service-tax/cgst-e-commerce-operator-tcs-collection-rate-reduced-0-25-percent.html</li>
+<li>GSTR-8 filing guide: https://cleartax.in/s/gstr-8-filing-guide-clear-gst</li>
+<li>Enrolment facility for unregistered suppliers: https://www.taxscan.in/gstn-introduces-enrolment-facility-for-gst-unregistered-suppliers-to-supply-goods-through-e-commerce-operators-issues-advisory/331197</li>
+<li>Local delivery under s.9(5) from 22 Sep 2025: https://blog.saginfotech.com/cbic-18-percent-gst-local-delivery-services-sept-22-2025</li>
+<li>Composition dealers through ECOs: https://taxguru.in/goods-and-service-tax/gst-cbic-notifies-new-ecommerce-tax-rules-composition-taxpayers.html</li>
+<li>Intermediary services circular: https://cbic-gst.gov.in/pdf/Circular-No-159-14-2021-GST.pdf</li>
+<li>E-invoicing for ECOs and reporting limits: https://einvoice6.gst.gov.in/content/e-invoicing-for-e-commerce-operators/</li>
+<li>E-invoice threshold: https://cleartax.in/s/e-invoicing-businesses-above-rs-5-crore-turnover</li>
+<li>E-way bill Rule 138: https://gstlearn.com/2024/01/24/information-to-be-furnished-prior-to-commencement-of-movement-of-goods-and-generation-of-e-way-bill-cgst-rule-138/</li>
+<li>Credit notes and IMS from 1 Oct 2025: https://taxguru.in/goods-and-service-tax/gst-amendments-finance-act-2025-effective-oct-1-2025-notified.html</li>
+<li>Records and retention: https://gstgyaan.com/section-36-of-the-cgst-act-period-of-retention-of-accounts</li>
+<li>TDS on e-commerce, 0.1% and s.393: https://blog.tdsman.com/2026/07/tds-on-e-commerce-transactions-section-3931-194o/ and https://taxgarden.in/blog/tds-on-ecommerce-payments-section-194o-393-guide-india-fy-2026-27</li>
+<li>CBDT guidance on 194-O: https://www.bdo.in/en-gb/insights/alerts-updates/cbdt-issues-additional-guidelines-on-tds-by-e-commerce-operators-under-section-194-o-of-the-it-act</li>
+<li>Form 140 / 131 FAQs: https://taxguru.in/income-tax/faqs-income-tax-form-140-quarterly-tds-return-non-salary-section-397-3-b.html</li>
+<li>SAC for e-commerce commission: https://cleartax.in/s/gst-applicable-on-ecommerce-sale</li>
+<li>Apparel rates from 22 Sep 2025: https://www.caclubindia.com/news/gst-rate-on-apparel-rationalised-18-percent-tax-for-garments-above-rs-2500-25945.asp</li>
+<li>GST Council meeting 7 Oct 2026: https://www.startupadvisory.in/blog-57th-gst-council-meeting-12-september-2026.htm</li>
+<li>DPDP timeline: https://www.pib.gov.in/PressNoteDetails.aspx?NoteId=156054&amp;ModuleId=3&amp;reg=3&amp;lang=2</li>
+</ul>
+<p><strong>Vendors and prices</strong></p>
+<ul>
+<li>ClearTax: https://cleartax.in/s/e-invoicing-gst-compliance-solution/ · https://cleartax.in/tds</li>
+<li>Adaequare: https://ugsp.adaequare.com/e-invoice-api · https://ugsp.adaequare.com/gst-apis</li>
+<li>GSTZen: https://gstzen.in/e-invoicing-api-integration-pricing · https://gstzen.in/e-way-bill-api-integration-pricing-details · https://gstzen.in/gst-validator-api-pricing-details</li>
+<li>WhiteBooks: https://whitebooks.in/about/pricing/ · https://whitebooks.in/api/gst-api-for-developers/</li>
+<li>Sandbox.co.in: https://sandbox.co.in/pricing · https://sandbox.co.in/tds</li>
+<li>Appyflow: https://appyflow.in/verify-gst/ · gstinapi: https://gstinapi.com/pricing · Eko: https://eps.eko.in/products/gst-verification-api</li>
+<li>Masters India: https://www.mastersindia.co/e-invoicing-api/ · MasterGST: https://mastergst.com/gst/e-invoice-api.html</li>
+<li>NIC and IRPs: https://einv-apisandbox.nic.in/onboarding.html · https://einvoice6.gst.gov.in/content/pricing-plan/ · https://einvoice3.gst.gov.in/introduction</li>
+<li>Taxilla: https://www.taxilla.com/blog/gstr-8-filing</li>
+<li>Gen GST and Gen e-TDS: https://saginfotech.com/PriceCalculator.aspx</li>
+<li>Winman: https://www.winmansoftware.com/files/Software_pricelist_winman.pdf · KDK: https://www.kdksoftware.com/spectrum-cloud/tds/ · TDSMAN: https://www.tdsman.com/pricing.asp</li>
+<li>Patron Accounting: https://www.patronaccounting.com/gst-returns-for-e-commerce-operator · EZTax: https://eztax.in/form26q-tds-return</li>
+<li>Zoho Books: https://www.zoho.com/in/books/pricing/ · TallyPrime: https://tallysolutions.com/buy-tally/ · Cygnet Invoicing Tool: https://invoicingtool.cygnettaxtech.com/pricing/</li>
+<li>Cashfree Easy Split: https://www.cashfree.com/docs/payments/split/billing/configuration · Razorpay Route: https://razorpay.com/route/ · Razorpay Invoices: https://razorpay.com/docs/api/payments/invoices/?preferred-country=IN</li>
+<li>India Compliance: https://indiacompliance.app/</li>
+</ul>
+</main></div>
+<script src="doc.js"></script>
+</body></html>
