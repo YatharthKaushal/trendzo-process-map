@@ -5,16 +5,17 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235852d8'/%3E%3Ctext x='16' y='21' font-size='13' font-family='sans-serif' font-weight='700' text-anchor='middle' fill='white'%3EOT%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="doc.css">
 <style>
-  .tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:999px;vertical-align:middle;margin-left:6px}
-  .tag.updated{background:#e8eefc;color:#3b5bdb}
-  .tag.stub{background:#fff3bf;color:#9c6a00}
-  main h1 .lede, .lede{color:var(--muted,#667085)}
+  /* Theme-aware: reuse doc.css tokens (rgb(var(--x))) so it reads in dark AND light. */
+  .tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:999px;vertical-align:middle;margin-left:8px;border:1px solid transparent}
+  .tag.updated{background:rgb(var(--accent-soft));color:rgb(var(--accent-fg));border-color:rgb(var(--accent-border))}
+  .tag.stub{background:rgb(var(--sunken));color:rgb(var(--fg-muted));border-color:rgb(var(--line))}
+  .meta{font-size:13.5px;color:rgb(var(--fg-muted))}
   ul.stories{list-style:none;padding-left:0;margin:0 0 14px}
-  ul.stories li{position:relative;padding:8px 0 8px 22px;border-bottom:1px solid var(--line,#eef0f3)}
-  ul.stories li:before{content:"“";position:absolute;left:2px;top:6px;color:#8a8f98;font-size:18px}
-  p.focus{background:var(--soft,#f7f8fa);border:1px solid var(--line,#eef0f3);border-radius:8px;padding:10px 12px;margin:0 0 10px;font-size:14px;line-height:1.55}
-  p.focus .k{display:inline-block;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#5852d8;margin-right:8px}
-  .meta{font-size:13.5px;color:#667085}
+  ul.stories li{position:relative;padding:8px 0 8px 22px;border-bottom:1px solid rgb(var(--line));color:rgb(var(--fg))}
+  ul.stories li:last-child{border-bottom:0}
+  ul.stories li:before{content:"“";position:absolute;left:2px;top:8px;color:rgb(var(--fg-subtle));font-size:18px;line-height:1}
+  p.focus{background:rgb(var(--sunken));border:1px solid rgb(var(--line));border-radius:8px;padding:10px 12px;margin:0 0 10px;font-size:14px;line-height:1.55;color:rgb(var(--fg))}
+  p.focus .k{display:inline-block;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:rgb(var(--accent-fg));margin-right:8px}
 </style>
 </head><body>
 <header><a class="back" href="index.html">← Process map</a><span class="sep"></span><b>Trendzo</b><span class="sub">Consumer app · QA user stories</span></header>
