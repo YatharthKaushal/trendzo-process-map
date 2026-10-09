@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Consumer app: QA user stories · Trendzo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235852d8'/%3E%3Ctext x='16' y='21' font-size='13' font-family='sans-serif' font-weight='700' text-anchor='middle' fill='white'%3EOT%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="doc.css">
+<style>
+  .tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:999px;vertical-align:middle;margin-left:6px}
+  .tag.updated{background:#e8eefc;color:#3b5bdb}
+  .tag.stub{background:#fff3bf;color:#9c6a00}
+  main h1 .lede, .lede{color:var(--muted,#667085)}
+  ul.stories{list-style:none;padding-left:0;margin:0 0 14px}
+  ul.stories li{position:relative;padding:8px 0 8px 22px;border-bottom:1px solid var(--line,#eef0f3)}
+  ul.stories li:before{content:"“";position:absolute;left:2px;top:6px;color:#8a8f98;font-size:18px}
+  p.focus{background:var(--soft,#f7f8fa);border:1px solid var(--line,#eef0f3);border-radius:8px;padding:10px 12px;margin:0 0 10px;font-size:14px;line-height:1.55}
+  p.focus .k{display:inline-block;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#5852d8;margin-right:8px}
+  .meta{font-size:13.5px;color:#667085}
+</style>
+</head><body>
+<header><a class="back" href="index.html">← Process map</a><span class="sep"></span><b>Trendzo</b><span class="sub">Consumer app · QA user stories</span></header>
+<div class="wrap">
+<nav><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s1">1. Onboarding &amp; Gender</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s2">2. Authentication (phone OTP)</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s3">3. Home &amp; Editorial Content (CMS-driven)</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s4">4. Category Browse &amp; Filters</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s5">5. Search — keyword suggestions → results</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s6">6. Image Search</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s7">7. Product Detail &amp; Variants</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s8">8. Virtual Try-On</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s9">9. Reels &amp; Social</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s10">10. Cart / Bag</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s11">11. Checkout &amp; Payment</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s12">12. Order Tracking &amp; Lifecycle</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s13">13. Try-and-Buy (door visit)</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s14">14. Returns &amp; Refunds</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s15">15. Ratings &amp; Reviews</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s16">16. Rewards &amp; Wallet</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s17">17. Profile &amp; Account</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s18">18. Notifications</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#s19">19. Non-functional</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#app-a">Appendix A — Cosmetic / stub (do NOT log as bugs)</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#app-b">Appendix B — Business rules to assert</a></div></div><div class="grp"><div class="gh"><span class="tg"></span><a class="l2" href="#app-c">Appendix C — Suggested release-pass priority</a></div></div></nav>
+<main>
+<h1>Consumer app — QA user stories</h1>
+<p class="meta"><strong>Scope:</strong> functional test coverage for the shopper app, by feature area. Stories are high-level (capability + intent); each has a short <strong>Test focus</strong> — happy path plus the key variations and negatives worth checking. Not step-by-step scripts.</p>
+<p class="meta"><strong>Personas:</strong> <strong>Guest</strong> (not logged in) · <strong>Shopper</strong> (logged in) · <strong>New user</strong> (first launch / first OTP, where login == signup).</p>
+<p class="meta"><strong>Before testing:</strong> prod API <code>api.trendzonow.com</code>; content comes from the admin Home CMS and is only visible after <strong>Publish</strong> (not Save); login OTP is via <strong>Slide</strong> (MSG91 down) — use a whitelisted test number; one order is created <strong>per store</strong>. Two behaviors ship in the <strong>upcoming build</strong>: search keyword suggestions and CMS pull-to-refresh — on older installs, published CMS changes appear on <strong>cold start</strong> and search shows products live. See Appendix A for cosmetic/stub screens (do not log as bugs).</p>
+<hr />
+<h2 id="s1">1. Onboarding &amp; Gender</h2>
+<ul class="stories">
+<li>As a new user, I want to pick my shopping rail (Her / Him) on first launch, so the app shows me relevant content from the start.</li>
+<li>As a shopper, I want to switch rail later, so I can browse the other side.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Gender pick persists across relaunch; rail choice visibly changes Home and section content; switching rail (Her↔Him) re-themes/re-filters without a crash or blank page; splash routes correctly whether onboarded or not.</p>
+
+<h2 id="s2">2. Authentication (phone OTP)</h2>
+<ul class="stories">
+<li>As a guest, I want to browse freely and only be asked to log in when I do something personal (checkout, save, like, try-on), so nothing blocks casual browsing.</li>
+<li>As a new user, I want my first OTP to both sign me up and log me in, then capture my name/email.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Protected actions raise the login sheet (not a hard wall); OTP request + verify on a valid number; wrong/expired OTP rejected cleanly; first-time login routes to Complete Profile; session persists across relaunch; logout clears personal data; resend-OTP works. <strong>OTP is via Slide right now (MSG91 down) — use a whitelisted test number.</strong></p>
+
+<h2 id="s3">3. Home &amp; Editorial Content (CMS-driven)</h2>
+<ul class="stories">
+<li>As a shopper, I want a home feed of campaigns, Top Stories, Steals, occasions and edits tailored to my rail, so I discover what is current.</li>
+<li>As a shopper, I want pull-to-refresh to show the latest published content.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> All home sections render for both rails; banners/stories/tiles open the right destination; a newly <strong>published</strong> CMS change appears (pull-to-refresh on the new build; cold start on older builds); scheduled items honour their dates; a disabled section is hidden; first launch shows content quickly, not a long blank; offline shows last-seen content, not an error wall.</p>
+
+<h2 id="s4">4. Category Browse &amp; Filters</h2>
+<ul class="stories">
+<li>As a shopper, I want to browse by category and narrow with filters/sort, so I can find a type of product fast.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Category grid loads; drilling into a category lists products; facet filters + sort change results and counts sensibly; empty category states read cleanly; the hero-zoom transition is smooth; back navigation keeps scroll/filters.</p>
+
+<h2 id="s5">5. Search — keyword suggestions → results <span class="tag updated">updated</span></h2>
+<ul class="stories">
+<li>As a shopper, I want keyword suggestions as I type (not a raw product dump), so I can pick the right term and jump to its results.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Typing shows <strong>suggestions</strong> (the typed term first, plus matching recent searches, categories, brands) — <strong>no product grid while typing</strong>; tapping a suggestion (or Recent/Trending chip, or the Search key) shows that term’s <strong>product results</strong>; editing the query returns to suggestions; clearing resets to Recent/Trending/Popular; a term with no matches shows a clean empty state; rail-first then widen ("nothing in HER — showing everything") works; offline typing still suggests the raw term + recents.</p>
+
+<h2 id="s6">6. Image Search <span class="tag stub">stub</span></h2>
+<ul class="stories">
+<li>As a shopper, I want to search by photo.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Camera/photo pick + scan animation runs and returns a result set <strong>without crashing</strong>. Results are a generic "newest catalog" stand-in, <strong>not</strong> true visual matches — expected until visual search ships. Do not log "wrong matches"; do log crashes/permission failures.</p>
+
+<h2 id="s7">7. Product Detail &amp; Variants</h2>
+<ul class="stories">
+<li>As a shopper, I want to see sizes/variants, price, imagery and reviews, and add to bag or buy now.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Variant/size selection; out-of-stock variants handled; Add to Bag + Buy Now; try-on entry point; reviews visible; price matches cart/checkout; image gallery and zoom; share/wishlist if present.</p>
+
+<h2 id="s8">8. Virtual Try-On</h2>
+<ul class="stories">
+<li>As a shopper, I want to see a garment on my own photo, so I can judge the look before buying.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Try-on requires login (gated); pick/take a person photo; generation produces a result image against a <strong>real listing</strong>; sensible loading + error messaging on failure/timeout; camera/photo permission handling; repeated try-ons do not leak/stall.</p>
+
+<h2 id="s9">9. Reels &amp; Social</h2>
+<ul class="stories">
+<li>As a guest, I want to watch the reels feed.</li>
+<li>As a shopper, I want to like/save/comment, post a reel tagging a product, and report/block a creator.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Feed scrolls and plays; read works for guests; like/save/comment/post are auth-gated; posting a ≤30s video + tagging a product; report + block hide content as expected; counts update.</p>
+
+<h2 id="s10">10. Cart / Bag</h2>
+<ul class="stories">
+<li>As a shopper, I want one bag with quantities, per-store delivery method and a coupon field, so I can review before checkout.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Add/update/remove items; quantity limits; per-store delivery selection; coupon apply/remove with server validation (valid, invalid, expired); guest bag is local and <strong>merges on login</strong>; totals recompute correctly; empty-bag state.</p>
+
+<h2 id="s11">11. Checkout &amp; Payment</h2>
+<ul class="stories">
+<li>As a shopper, I want a single-page checkout with address, delivery and payment, so I can pay in one place.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Address select/add; delivery options (Standard / Store pickup / <strong>Try-and-Buy</strong>); payment via <strong>Pay online (UPI/card/netbanking, Razorpay)</strong> and <strong>Cash on Delivery</strong>; <strong>wallet as partial tender</strong>; <strong>COD is blocked for Try-and-Buy</strong>; placing creates <strong>one order per store</strong>; Razorpay success/failure/cancel paths; server verifies capture before success; price shown = price charged; retry on a pending payment.</p>
+
+<h2 id="s12">12. Order Tracking &amp; Lifecycle</h2>
+<ul class="stories">
+<li>As a shopper, I want to track an order, see its timeline, cancel when allowed, and confirm delivery.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Order history + detail; status timeline per delivery method; cancel only when eligible; delivery/handover proof (QR/OTP) shown at the right stage; retry payment on pending; post-delivery actions (return/keep) appear when valid.</p>
+
+<h2 id="s13">13. Try-and-Buy (door visit)</h2>
+<ul class="stories">
+<li>As a shopper, I want to try items at my door and keep only what I want, so I pay for what I keep.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Try-and-Buy selectable at checkout (prepaid, <strong>not COD</strong>); at-door <strong>Keep / Return</strong> per item; refund for returned items follows; the try window / rules read clearly; partial keep works.</p>
+
+<h2 id="s14">14. Returns &amp; Refunds</h2>
+<ul class="stories">
+<li>As a shopper, I want to return eligible delivered items and hand them to the pickup agent.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Return allowed only for <strong>delivered, within 7 days, eligible</strong> items; pick order → items → reason; reverse pickup created; <strong>collect OTP</strong> shown to read to the driver; refund reflected; ineligible items/orders blocked with a reason. (No exchange/replacement — expected.)</p>
+
+<h2 id="s15">15. Ratings &amp; Reviews</h2>
+<ul class="stories">
+<li>As a shopper, I want to read reviews and write my own, so I can decide and share.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Read reviews on PDP + Reviews screen; writing requires login; submit/edit a rating + text; validation on empty/oversized input.</p>
+
+<h2 id="s16">16. Rewards &amp; Wallet</h2>
+<ul class="stories">
+<li>As a shopper, I want spin-to-win, coupons, referrals, gift-card redemption and a wallet, so I am rewarded for engaging.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Real features: <strong>Spin &amp; Win</strong> draws a prize server-side, claim requires login; <strong>Coupon Wallet</strong> shows real active offers and they apply at checkout; <strong>Referrals/Invite</strong> code + share + redeem; <strong>Gift card</strong> redeem credits the <strong>wallet</strong>; <strong>wallet + loyalty</strong> balances and ledgers are accurate and spend correctly. (Daily Reward / Style Quiz / Lucky Draw / Challenges / Push &amp; Win are cosmetic — see Appendix A.)</p>
+
+<h2 id="s17">17. Profile &amp; Account</h2>
+<ul class="stories">
+<li>As a shopper, I want to manage my profile, addresses, payment, notifications, support and delete my account.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Edit name/email/phone; <strong>saved addresses</strong> (add/edit/delete, pincode→city, location required); notifications inbox reads + marks read; <strong>support tickets</strong> tied to an order/return (thread + reply); store pickup locator; <strong>account deletion</strong> path (confirm the backend endpoint exists before sign-off). Saved-card list is static/local — real payment is Razorpay at checkout (Appendix A).</p>
+
+<h2 id="s18">18. Notifications</h2>
+<ul class="stories">
+<li>As a shopper, I want an in-app notification inbox for order/return/promo updates.</li>
+</ul>
+<p class="focus"><span class="k">Test focus</span> Inbox lists real notifications; unread/read state; tapping routes to the right screen (order, return, etc.); empty state.</p>
+
+<h2 id="s19">19. Non-functional</h2>
+<p class="focus"><span class="k">Test focus</span> Cold-start to first paint is reasonable; rail flips are smooth (no blank/collapse); offline/poor-network degrades gracefully (last-seen content, honest errors — never fake demo products); images load at sensible sizes; festival <strong>theme</strong> applies/expires; no frozen-screen after closing the Search/Product modals; back/stack behaves; memory stable over a long session.</p>
+
+<h2 id="app-a">Appendix A — Cosmetic / stub (do NOT log as bugs)</h2>
+<p>These are expected to be non-functional or sample-data only:</p>
+<ul>
+<li><strong>Image Search</strong> — returns generic newest catalog, not visual matches.</li>
+<li><strong>Daily Reward, Style Quiz, Lucky Draw, App Challenges, Push & Win</strong> — local/random, no backend.</li>
+<li><strong>Community Feed, Mood Board</strong> — bundled sample data.</li>
+<li><strong>Style Preferences, Fashion Calendar, Sustainability</strong> — hardcoded, not persisted.</li>
+<li><strong>Saved cards</strong> on Payment Methods — static list; actual payment is Razorpay at checkout. (The wallet balance shown there <strong>is</strong> real.)</li>
+<li><strong>Language / some toggle screens</strong> — local toggles only.</li>
+<li><strong>Legacy 4-step checkout</strong> — retired and unreachable; checkout is the single-page flow.</li>
+</ul>
+<p>Still log <strong>crashes, broken navigation, or auth/permission failures</strong> on these screens — just not "the reward/quiz/feed isn’t real".</p>
+
+<h2 id="app-b">Appendix B — Business rules to assert</h2>
+<ul>
+<li>One <strong>order per store</strong> in a multi-store bag.</li>
+<li><strong>COD not allowed</strong> for Try-and-Buy (prepaid only).</li>
+<li>Returns: <strong>delivered + within 7 days + eligible items</strong>; reverse pickup uses a <strong>collect OTP</strong>; no exchange.</li>
+<li><strong>Wallet</strong> can be a <strong>partial</strong> tender alongside Razorpay/COD.</li>
+<li>Guest bag is <strong>local</strong> and <strong>merges on login</strong>; orders/returns/wallet/loyalty/addresses/notifications are <strong>auth-only</strong> (401 for guests).</li>
+<li>CMS/home content is the <strong>published</strong> snapshot; unpublished admin edits must <strong>not</strong> appear.</li>
+<li>Login <strong>OTP via Slide</strong> right now (MSG91 down) — use a whitelisted test number.</li>
+</ul>
+
+<h2 id="app-c">Appendix C — Suggested release-pass priority</h2>
+<ol>
+<li>Auth (OTP)</li><li>Checkout & Payment (Razorpay, COD, wallet)</li><li>Cart</li><li>Order tracking</li>
+<li>Returns & Try-and-Buy</li><li>Home/CMS publish visibility</li><li>Search</li><li>Product / Try-on</li>
+<li>Reviews / Reels</li><li>Rewards / Profile</li><li>Non-functional / offline</li>
+</ol>
+
+</main></div>
+<script src="doc.js"></script>
+</body></html>
